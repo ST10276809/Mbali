@@ -12,7 +12,6 @@ Exit: To exit the program, choose option 5 from the menu.
 
         Recipe Book ingredients code of Part One
 
-using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -30,26 +29,26 @@ namespace BookOfRecipes
             while (!exit)
             {
                 Console.WriteLine("\nWelcome to the Book Of Recipes");//The program starts with displaying a welcome message and a menu of options for the user.
-                Console.WriteLine("1) Insert a new recipe");//Allows the user to input a new recipe, including its name, ingredients, and steps.
-                Console.WriteLine("2) View the recipe");//Enables the user to view an existing recipe by entering its name.
-                Console.WriteLine("3) The scale of the recipe");//Lets the user scale the quantities of ingredients for a chosen recipe.
-                Console.WriteLine("4) Reset the quantity of the ingredient");//Reset the quantity of the ingredient (4): Provides functionality to reset ingredient quantities (not fully implemented).
-                Console.WriteLine("5) Exit");//Allows the user to exit the program.
+                Console.WriteLine("1) Insert a new recipe");//Users may add a new recipe
+                Console.WriteLine("2) View the recipe");//Option to view the recipe
+                Console.WriteLine("3) The scale of the recipe");//User can enter the measurents
+                Console.WriteLine("4) Reset the quantity of the ingredient");//User can start the ingredients over
+                Console.WriteLine("5) Exit");
                 string choice = Console.ReadLine();
 
                 switch (choice)
                 {
                     case "1":
-                        EnterNewRecipe();//Prompts the user to input the name of the recipe.
+                        EnterNewRecipe();//Prompts the user to input the name of the recipe. 
                         break;
                     case "2":
-                        ViewRecipe();//Asks the user to enter the name of the recipe they want to view
+                        ViewRecipe();//Asks the user to view the recipe
                         break;
                     case "3":
                         RecipeScale();//Asks the user to enter the name of the recipe they want to scale
                         break;
                     case "4":
-                        ResetIngredientQuantity();//Placeholder message indicates that the functionality to reset ingredient quantities is not fully implemented.
+                        ResetIngredientQuantity();//Placeholder message indicates that the functionality to reset ingredient quantities is not fully implemented
                         break;
                     case "5":
                         exit = true;
@@ -154,3 +153,39 @@ namespace BookOfRecipes
             public string Name { get; private set; }
             private string originalQuantity;
             public string Quantity { get; private set; }
+
+            public Ingredient(string name, string quantity)
+            {
+                Name = name;
+                Quantity = originalQuantity = quantity;
+            }
+
+            public void ScaleQuantity(double scaleFactor)
+            {
+
+                string[] parts = Quantity.Split(' ');
+                if (parts.Length != 2)
+                {
+                    Console.WriteLine("Invalid quantity format.");
+                    return;
+                }
+
+                double amount;
+                if (!double.TryParse(parts[0], out amount))
+                {
+                    Console.WriteLine("Invalid quantity format.");
+                    return;
+                }
+
+                string unit = parts[1];
+                amount *= scaleFactor;
+                Quantity = $"{amount} {unit}";
+            }
+
+            public void ResetQuantity()
+            {
+                Quantity = originalQuantity;
+            }
+        }
+    }
+}
